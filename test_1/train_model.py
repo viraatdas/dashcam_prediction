@@ -17,6 +17,7 @@ N_img_channels = 3
 
 
 def nvidia_model():
+    print ("Model is being trained")
     inputShape = (N_img_height, N_img_width, N_img_channels)
 
     model = Sequential()

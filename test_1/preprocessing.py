@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+import pickle
 
 
 #Getting speed from the text file
@@ -16,7 +17,7 @@ cap = cv.VideoCapture("data/train.mp4")
 all_frames = []
 ret, frame1 = cap.read()
 i = 0
-while i < len(speed):
+while i < len(all_frames):
     temp = []
     temp.append(frame1)
     try:
