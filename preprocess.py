@@ -1,6 +1,6 @@
 import cv2 as cv
 from matplotlib import pyplot as plt
-import csv
+import pickle
 
 #Function to display the video of the current capture
 def dispVid(cap):
@@ -27,20 +27,23 @@ fps = cap.get(cv.CAP_PROP_FRAME_COUNT)
 frame_count = 0
 csv_write = []
 while True:
-    ret, frame = cap.read()
-    frame = frame[y_start:y_end, x_start:x_end]
-    frame_count+=1
-    time = float(frame_count)/fps
-    file_loc = "data/train_image/train_" + str(time) + ".jpg"
-    cv.imwrite(file_loc, frame)
-    string = file_loc + "," + str(time) + "," + str(next(iter_speed))
-    csv_write.append(string)
-    if cv.waitKey(1) & 0xFF == ord('q'):
+    try:
+        ret, frame = cap.read()
+        frame = frame[y_start:y_end, x_start:x_end]
+        frame_count+=1
+        file_loc = "data/train_image/train_" + str(frame_count) + ".jpg"
+        cv.imwrite(file_loc, frame)
+        string = file_loc + "," + str(frame_count) + "," + str(next(iter_speed))
+        csv_write.append(string)
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    except:
         break
 cap.release()
 cv.destroyAllWindows()
 
-with open("data/img_csv/train_info.csv", 'wb', newline='') as file:
-    wr = csv.writer(file, quoting=csv.QUOTE_ALL)
-    wr.writerow(csv_write)
 
+output = open('data.pkl', 'wb')
+pickle.dump(csv_write, output)
+
+output.close()
