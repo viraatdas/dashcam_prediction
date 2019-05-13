@@ -45,5 +45,3 @@ cv.destroyAllWindows()
 
 output = open('data.pkl', 'wb')
 pickle.dump(csv_write, output)
-
-output.close()
