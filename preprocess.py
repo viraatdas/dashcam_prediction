@@ -1,5 +1,6 @@
 import cv2 as cv
 from matplotlib import pyplot as plt
+import csv
 
 #Function to display the video of the current capture
 def dispVid(cap):
@@ -34,10 +35,12 @@ while True:
     cv.imwrite(file_loc, frame)
     string = file_loc + "," + str(time) + "," + str(next(iter_speed))
     csv_write.append(string)
-    cv.imshow("Feed", frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
-
 cap.release()
 cv.destroyAllWindows()
+
+with open("data/img_csv/train_info.csv", 'wb', newline='') as file:
+    wr = csv.writer(file, quoting=csv.QUOTE_ALL)
+    wr.writerow(csv_write)
 
