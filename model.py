@@ -91,6 +91,9 @@ def train_valid_split(dframe, seed_val):
             train_data = pd.concat(train_frames, axis = 0, join = 'outer', ignore_index=False)
         return train_data, valid_data
 train_meta = pd.read_csv("data/img_csv/train_info.csv")
+
+print('shape: ', train_meta.shape)
+
 train_data, valid_data = train_valid_split(train_meta, seeds[0])
 
 fig, ax = plt.subplots(figsize=(20,10))
