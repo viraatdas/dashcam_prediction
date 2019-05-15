@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4e39851-c32a-494e-8c0a-348aadbc42ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,14 +41,14 @@
           <entry key="Python Console" value="792" />
           <entry key="dummy" value="14" />
           <entry key="md" value="225" />
-          <entry key="py" value="8086" />
+          <entry key="py" value="8095" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="225" />
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="8878" />
+          <entry key="Python" value="8887" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -74,8 +74,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="636">
-              <caret line="130" column="21" lean-forward="true" selection-start-line="130" selection-start-column="21" selection-end-line="130" selection-end-column="21" />
+            <state relative-caret-position="166">
+              <caret line="377" column="14" lean-forward="true" selection-start-line="377" selection-start-column="14" selection-end-line="377" selection-end-column="14" />
               <folding>
                 <element signature="e#66#84#0" expanded="true" />
               </folding>
@@ -97,6 +97,7 @@
       <find>validation</find>
       <find>cv</find>
       <find>HDF</find>
+      <find>train_vali</find>
     </findStrings>
     <replaceStrings>
       <replace>cv2</replace>
@@ -133,7 +134,8 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="17" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="877" />
@@ -340,7 +342,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.033619456" />
@@ -431,8 +433,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="130" column="21" lean-forward="true" selection-start-line="130" selection-start-column="21" selection-end-line="130" selection-end-column="21" />
+        <state relative-caret-position="166">
+          <caret line="377" column="14" lean-forward="true" selection-start-line="377" selection-start-column="14" selection-end-line="377" selection-end-column="14" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
           </folding>
