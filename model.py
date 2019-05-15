@@ -93,6 +93,7 @@ def train_valid_split(dframe, seed_val):
 train_meta = pd.read_csv("data/img_csv/train_info.csv")
 
 print('shape: ', train_meta.shape)
+print (train_meta)
 
 train_data, valid_data = train_valid_split(train_meta, seeds[0])
 
