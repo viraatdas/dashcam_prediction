@@ -1,17 +1,65 @@
 #Based off https://github.com/JovanSardinha/speed-challenge-2017
 
-import cv2
 import numpy as np
-from sklearn.utils import shuffle
-import pandas as pd
-from tqdm import tqdm
-
+import tensorflow as tf
+import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import matplotlib.gridspec as gridspec
+from sklearn.utils import shuffle
+from tqdm import tqdm
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+import h5py
+
+from keras.models import Sequential
+from keras.layers.convolutional import Convolution2D
+from keras.layers.pooling import MaxPooling2D
+from keras.layers.core import Activation, Dropout, Flatten, Dense, Lambda
+from keras.layers import ELU
+from keras.optimizers import Adam
+import keras.backend.tensorflow_backend as KTF
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
 seeds = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+
+
+def preprocess_image(image):
+    """
+    preprocesses the image
+
+    input: image (480 (y), 640 (x), 3) RGB
+    output: image (shape is (220, 66, 3) as RGB)
+
+    This stuff is performed on my validation data and my training data
+    Process:
+             1) Cropping out black spots
+             3) resize to (220, 66, 3) if not done so already from perspective transform
+    """
+    # Crop out sky (top) (100px) and black right part (-90px)
+    image_cropped = image[100:440, :-90]  # -> (380, 550, 3)
+
+    image = cv2.resize(image_cropped, (220, 66), interpolation=cv2.INTER_AREA)
+
+    return image
+
+
+def preprocess_image_valid_from_path(image_path, speed):
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = preprocess_image(img)
+    return img, speed
+
+
+def preprocess_image_from_path(image_path, speed, bright_factor):
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = change_brightness(img, bright_factor)
+    img = preprocess_image(img)
+    return img, speed
 
 def train_valid_split(dframe, seed_val):
     """
@@ -108,3 +156,200 @@ def opticalFlowDense(curr_img, next_img):
     return rgb_flow
 
 
+def generate_training_data(data, batch_size = 32):
+    image_batch = np.zeros((batch_size, 66, 220, 3)) # nvidia input params
+    label_batch = np.zeros((batch_size))
+    while True:
+        for i in range(batch_size):
+            idx = np.random.randint(1, len(data) - 1)
+
+            row_now = data.iloc[[idx]].reset_index()
+            row_prev = data.iloc[[idx - 1]].reset_index()
+            row_next = data.iloc[[idx + 1]].reset_index()
+
+            # Find the 3 respective times to determine frame order
+
+            time_now = row_now['image_index'].values[0]
+            time_prev = row_prev['image_index'].values[0]
+            time_next = row_next['imagE_index'].values[0]
+
+            if abs(time_now - time_prev) == 1 and time_now > time_prev:
+                row1 = row_prev
+                row2 = row_now
+
+            elif abs(time_next - time_now) == 1 and time_next > time_now:
+                row1 = row_now
+                row2 = row_next
+            else:
+                print("Error generating row")
+
+            x1, y1 = preprocess_image_from_path(row1['image_path'].values[0],
+                                                row1['speed'].values[0],
+                                                bright_factor)
+
+            # preprocess another image
+            x2, y2 = preprocess_image_from_path(row2['image_path'].values[0],
+                                                row2['speed'].values[0],
+                                                bright_factor)
+
+            # compute optical flow send in images as RGB
+            rgb_diff = opticalFlowDense(x1, x2)
+
+            # calculate mean speed
+            y = np.mean([y1, y2])
+
+            image_batch[i] = rgb_diff
+            label_batch[i] = y
+
+    # print('image_batch', image_batch.shape, ' label_batch', label_batch)
+    # Shuffle the pairs before they get fed into the network
+    yield shuffle(image_batch, label_batch)
+
+
+def generate_validation_data(data):
+    while True:
+        for idx in range(1, len(
+                data) - 1):  # start from the second row because we may try to grab it and need its prev to be in bounds
+            row_now = data.iloc[[idx]].reset_index()
+            row_prev = data.iloc[[idx - 1]].reset_index()
+            row_next = data.iloc[[idx + 1]].reset_index()
+
+            # Find the 3 respective times to determine frame order (current -> next)
+
+            time_now = row_now['image_index'].values[0]
+            time_prev = row_prev['image_index'].values[0]
+            time_next = row_next['image_index'].values[0]
+
+            if abs(time_now - time_prev) == 1 and time_now > time_prev:
+                row1 = row_prev
+                row2 = row_now
+
+            elif abs(time_next - time_now) == 1 and time_next > time_now:
+                row1 = row_now
+                row2 = row_next
+            else:
+                print('Error generating row')
+
+            x1, y1 = preprocess_image_valid_from_path(row1['image_path'].values[0], row1['speed'].values[0])
+            x2, y2 = preprocess_image_valid_from_path(row2['image_path'].values[0], row2['speed'].values[0])
+
+            img_diff = opticalFlowDense(x1, x2)
+            img_diff = img_diff.reshape(1, img_diff.shape[0], img_diff.shape[1], img_diff.shape[2])
+            y = np.mean([y1, y2])
+
+            speed = np.array([[y]])
+
+            # print('img_diff', img_diff.shape, ' speed', speed)
+            yield img_diff, speed
+
+
+N_img_height = 66
+N_img_width = 220
+N_img_channels = 3
+
+
+def nvidia_model():
+    inputShape = (N_img_height, N_img_width, N_img_channels)
+
+    model = Sequential()
+    # normalization
+    # perform custom normalization before lambda layer in network
+    model.add(Lambda(lambda x: x / 127.5 - 1, input_shape=inputShape))
+
+    model.add(Convolution2D(24, (5, 5),
+                            strides=(2, 2),
+                            padding='valid',
+                            kernel_initializer='he_normal',
+                            name='conv1'))
+
+    model.add(ELU())
+    model.add(Convolution2D(36, (5, 5),
+                            strides=(2, 2),
+                            padding='valid',
+                            kernel_initializer='he_normal',
+                            name='conv2'))
+
+    model.add(ELU())
+    model.add(Convolution2D(48, (5, 5),
+                            strides=(2, 2),
+                            padding='valid',
+                            kernel_initializer='he_normal',
+                            name='conv3'))
+    model.add(ELU())
+    model.add(Dropout(0.5))
+    model.add(Convolution2D(64, (3, 3),
+                            strides=(1, 1),
+                            padding='valid',
+                            kernel_initializer='he_normal',
+                            name='conv4'))
+
+    model.add(ELU())
+    model.add(Convolution2D(64, (3, 3),
+                            strides=(1, 1),
+                            padding='valid',
+                            kernel_initializer='he_normal',
+                            name='conv5'))
+
+    model.add(Flatten(name='flatten'))
+    model.add(ELU())
+    model.add(Dense(100, kernel_initializer='he_normal', name='fc1'))
+    model.add(ELU())
+    model.add(Dense(50, kernel_initializer='he_normal', name='fc2'))
+    model.add(ELU())
+    model.add(Dense(10, kernel_initializer='he_normal', name='fc3'))
+    model.add(ELU())
+
+    # do not put activation at the end because we want to exact output, not a class identifier
+    model.add(Dense(1, name='output', kernel_initializer='he_normal'))
+
+    adam = Adam(lr=1e-4, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+    model.compile(optimizer=adam, loss='mse')
+
+    return model
+
+
+val_size = len(valid_data.index)
+valid_generator = generate_validation_data(valid_data)
+BATCH = 16
+print('val_size: ', val_size)
+
+filepath = 'model-weights-Vtest3.h5'
+earlyStopping = EarlyStopping(monitor='val_loss',
+                              patience=1,
+                              verbose=1,
+                              min_delta=0.23,
+                              mode='min', )
+modelCheckpoint = ModelCheckpoint(filepath,
+                                  monitor='val_loss',
+                                  save_best_only=True,
+                                  mode='min',
+                                  verbose=1,
+                                  save_weights_only=True)
+callbacks_list = [modelCheckpoint]
+
+model = nvidia_model()
+train_size = len(train_data.index)
+train_generator = generate_training_data(train_data, BATCH)
+history = model.fit_generator(
+    train_generator,
+    steps_per_epoch=400,
+    epochs=85,
+    callbacks=callbacks_list,
+    verbose=1,
+    validation_data=valid_generator,
+    validation_steps=val_size)
+
+print(history)
+
+### plot the training and validation loss for each epoch
+fig, ax = plt.subplots(figsize=(20, 10))
+plt.plot(history.history['loss'], 'ro--')
+plt.plot(history.history['val_loss'], 'go--')
+plt.title('Model-v2test mean squared error loss 15 epochs')
+plt.ylabel('mean squared error loss')
+plt.xlabel('epoch')
+plt.legend(['training set', 'validation set'], loc='upper right')
+plt.savefig('./assets/MSE_per_epoch.png')
+plt.close()
+
+print("done")
