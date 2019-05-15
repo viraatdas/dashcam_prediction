@@ -75,7 +75,7 @@ def train_valid_split(dframe, seed_val):
     valid_data = pd.DataFrame()
 
     np.random.seed(seed_val)
-    for i in tqdm(range(len(dframe)) - 1):
+    for i in tqdm(range(len(dframe) - 1)):
         idx1 = np.random.randint(len(dframe) - 1)
         idx2 = idx1 + 1
 
