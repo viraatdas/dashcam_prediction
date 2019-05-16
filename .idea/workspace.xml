@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4e39851-c32a-494e-8c0a-348aadbc42ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocess_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocess_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +26,7 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="9" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="1" />
@@ -33,7 +36,7 @@
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.63" value="1" />
-          <entry key="project.opened" value="10" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -41,21 +44,21 @@
           <entry key="Python Console" value="792" />
           <entry key="dummy" value="14" />
           <entry key="md" value="225" />
-          <entry key="py" value="8095" />
+          <entry key="py" value="8323" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="225" />
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="8887" />
+          <entry key="Python" value="9115" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="md" value="1" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="11" />
+          <entry key="py" value="14" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -64,21 +67,56 @@
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="11" />
+          <entry key="Python" value="14" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="377" column="14" lean-forward="true" selection-start-line="377" selection-start-column="14" selection-end-line="377" selection-end-column="14" />
+            <state relative-caret-position="-1540">
+              <caret line="237" column="28" selection-start-line="237" selection-start-column="24" selection-end-line="237" selection-end-column="28" />
               <folding>
                 <element signature="e#66#84#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/preprocess.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="19" column="11" lean-forward="true" selection-end-line="46" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <marker date="1557853093551" expanded="true" signature="97:244" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/predict.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="903">
+              <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+                <marker date="1557969158465" expanded="true" signature="115:120" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/preprocess_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="30" column="45" lean-forward="true" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -98,6 +136,8 @@
       <find>cv</find>
       <find>HDF</find>
       <find>train_vali</find>
+      <find>train_da</find>
+      <find>mean</find>
     </findStrings>
     <replaceStrings>
       <replace>cv2</replace>
@@ -125,6 +165,8 @@
         <option value="$PROJECT_DIR$/csv_writer.py" />
         <option value="$PROJECT_DIR$/preprocess.py" />
         <option value="$PROJECT_DIR$/model.py" />
+        <option value="$PROJECT_DIR$/predict.py" />
+        <option value="$PROJECT_DIR$/preprocess_test.py" />
       </list>
     </option>
   </component>
@@ -134,11 +176,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="17" />
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="-1680" />
+    <option name="y" value="-150" />
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -168,11 +210,6 @@
             <path>
               <item name="speedchallenge" type="b2602c69:ProjectViewProjectNode" />
               <item name="speedchallenge" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="speedchallenge" type="b2602c69:ProjectViewProjectNode" />
-              <item name="speedchallenge" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -342,10 +379,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
+    <frame x="-1680" y="-150" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.033619456" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12087912" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -411,16 +448,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/preprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
-          <folding>
-            <marker date="1557853093551" expanded="true" signature="97:244" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/csv_writer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -433,11 +460,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="377" column="14" lean-forward="true" selection-start-line="377" selection-start-column="14" selection-end-line="377" selection-end-column="14" />
+        <state relative-caret-position="-1540">
+          <caret line="237" column="28" selection-start-line="237" selection-start-column="24" selection-end-line="237" selection-end-column="28" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="903">
+          <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <marker date="1557969158465" expanded="true" signature="115:120" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="11" lean-forward="true" selection-end-line="46" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1557853093551" expanded="true" signature="97:244" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocess_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="45" lean-forward="true" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
         </state>
       </provider>
     </entry>
