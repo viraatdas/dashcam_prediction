@@ -1,3 +1,4 @@
 /data/*.mp4
 /data/train_image/
 /data/test_image/
+__pycache__/

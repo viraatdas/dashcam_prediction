@@ -1,6 +1,27 @@
-from model import *
+import numpy as np
+import tensorflow as tf
+import cv2
+import os
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import matplotlib.gridspec as gridspec
+from sklearn.utils import shuffle
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 import pandas as pd
+import pickle
+import h5py
+from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
+from keras.models import Sequential
+from keras.layers.convolutional import Convolution2D
+from keras.layers.pooling import MaxPooling2D
+from keras.layers.core import Activation, Dropout, Flatten, Dense, Lambda
+from keras.layers import ELU
+from keras.optimizers import Adam
+import keras.backend.tensorflow_backend as KTF
+
+from model import *
 
 def make_predictions(data):
     for idx in tqdm(range(1, len(data.index) - 1)):
@@ -88,6 +109,7 @@ def error_analysis(error_thresh):
     plt.legend(['Ground truth', 'Incorrect prediction'], loc='upper right')
     plt.show()
 
-interact(error_analysis, error_thresh=(0,5, 0.1))
+
+
 
 
